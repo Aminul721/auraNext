@@ -1,0 +1,289 @@
+AURA HUMANOID TECH — HTML TO NEXT.JS CONVERSION PROMPT
+
+ROLE You are a senior Next.js App Router developer, UI/UX engineer,
+accessibility specialist, and frontend performance engineer. Convert the
+supplied static AURA HUMANOID TECH website into a clean,
+production-ready Next.js project.
+
+PROJECT INPUTS The supplied archive contains: - html/index.html — the
+existing single-page website markup and content - html/css/style.css —
+the full existing stylesheet, responsive rules, design tokens, and
+visual styling - html/js/main.js — current browser interactions -
+html/img/ — existing image assets - html/corrections.md — client
+feedback and requested visual/content corrections
+
+Read ALL these files before writing code. Do not rely only on this
+prompt or make assumptions about unseen code. Treat the HTML, CSS,
+JavaScript, images, and corrections.md as the source of truth.
+
+PRIMARY GOAL Rebuild the existing website using: - Next.js with App
+Router (app/ directory) - JavaScript or TypeScript consistently (prefer
+TypeScript unless the existing project already uses JavaScript) - React
+components - CSS Modules or a clearly organized global CSS approach;
+preserve the existing visual design rather than introducing a new UI
+framework - Next.js Image for local image assets where appropriate -
+Semantic, accessible HTML
+
+This is a FRONTEND conversion. Do not add MongoDB, Express,
+authentication, admin dashboards, or backend APIs unless separately
+requested. Do not invent backend functionality.
+
+NON-NEGOTIABLE DESIGN PRESERVATION Preserve the current AURA HUMANOID
+TECH identity: - Premium, futuristic, minimal, professional, corporate
+robotics aesthetic - Matte black / deep navy backgrounds - Electric blue
+and neon cyan accents - Glass-panel cards, subtle borders, restrained
+glow effects - Inter body font and Outfit heading font (or an equivalent
+correctly loaded setup) - Existing typography hierarchy, spacing,
+section order, content, buttons, and animation character - Responsive
+layout and the existing image-to-content relationships
+
+Use the CSS variables already defined in style.css as the starting
+design tokens: –matte-black, –dark-slate, –deep-navy, –cyber-silver,
+–electric-blue, –cyan-neon, –cyan-glow, –text-light, –text-muted,
+–glass-bg, –glass-border, –glass-shadow, –font-sans, –font-heading.
+
+Do not arbitrarily redesign the website, change brand colors, remove
+sections, shorten approved copy, or replace supplied assets without a
+reason grounded in corrections.md.
+
+RECOMMENDED NEXT.JS STRUCTURE Create a maintainable structure similar
+to:
+
+app/ layout.tsx page.tsx globals.css components/ Header.tsx
+HeroSection.tsx AboutSection.tsx RoboticsSection.tsx
+ApplicationsSection.tsx ProcessSection.tsx WhyUsSection.tsx
+ShowcaseSection.tsx CtaSection.tsx ContactSection.tsx Footer.tsx
+FloatingWhatsApp.tsx ScrollToTop.tsx RoboticsVideo.tsx public/ images/
+(copy all supplied image assets here, preserving useful filenames)
+video/ (only if an approved video asset is supplied) README.md
+
+You may adjust this structure if the project already has a sensible
+structure. Keep components focused and reusable. The homepage should
+compose the sections in the same order as the original HTML.
+
+CONVERSION REQUIREMENTS 1. Inspect the existing package.json and project
+before installing or changing dependencies. Do not overwrite an existing
+working project setup. 2. Convert the original HTML body into React
+components. Remove document-level tags such as html, head, and body from
+page components. 3. Move global CSS into app/globals.css (or split it
+into well-organized component stylesheets). Preserve the original CSS
+rules and responsive breakpoints. Fix only issues necessary for correct
+React/Next.js behavior and responsive quality. 4. Move all image assets
+into public/images/ and update every reference to paths such as
+/images/hero.webp. Preserve filenames and do not rename assets
+unnecessarily. 5. Use next/image for local content images. Provide
+meaningful alt text, correct dimensions or fill/sizes settings, and
+object-fit behavior. For decorative background images, CSS backgrounds
+are acceptable. 6. Do not use remote placeholder images or random stock
+imagery. Use the supplied images unless corrections.md specifically
+calls for a replacement. 7. Convert inline SVG icons into valid JSX
+(including attribute name changes such as strokeWidth, strokeLinecap,
+fillRule, etc.). Reuse icon components where practical. Do not introduce
+a large icon dependency for a few simple existing icons. 8. Convert
+class to className, for to htmlFor, and all other HTML attributes to
+valid JSX. Ensure all mapped elements have stable keys. 9. Keep the same
+section IDs so all header/footer anchor navigation works: #home, #about,
+#robotics, #applications, #why-us, and #contact. Include any other IDs
+required by the source. 10. Preserve links, mailto links, WhatsApp
+links, external-link safety attributes, and contact details exactly as
+provided in the source. Do not invent or alter phone numbers, emails,
+company registration details, or address. 11. Add correct page metadata
+using the Next.js Metadata API in app/layout.tsx. Preserve the original
+title, description, keywords where appropriate, canonical URL, Open
+Graph information, Twitter card information, favicon, and organization
+structured data. Use the supplied official website URL from the source.
+Avoid duplicating metadata in multiple places. 12. Keep the site a
+single-page landing page unless the source clearly defines other pages.
+
+INTERACTIVE FUNCTIONALITY Rebuild the behavior from html/js/main.js
+using React state and lifecycle-safe event handling. Do not simply paste
+the old script into a React component or manipulate the DOM globally
+after render.
+
+Header: - Fixed/sticky header behavior must match the original. - Add
+the scrolled visual state when scroll position passes the existing
+threshold (50px). - Mobile menu must open/close accessibly, expose
+aria-expanded and aria-controls, and close after a navigation link is
+selected. - Support Escape to close the mobile menu where appropriate. -
+Prevent background/content overflow on small screens.
+
+Navigation: - Smooth-scroll to the relevant section. - Account for the
+fixed header offset so section headings are not hidden. - Header and
+footer navigation must work on desktop and mobile without a page
+reload. - Prefer CSS scroll-behavior plus scroll-margin-top or a small
+reusable scroll helper; avoid duplicate listeners.
+
+Scroll reveal: - Preserve the existing reveal-on-scroll / is-visible
+animation behavior and delay classes if used. - Implement with a
+reusable client component or hook using IntersectionObserver. -
+Disconnect observers and clean up listeners correctly. - Respect
+prefers-reduced-motion. - Ensure content is not permanently invisible if
+JavaScript is disabled, IntersectionObserver is unavailable, or
+rendering occurs in the Next.js server environment. The default state
+must not hide essential content.
+
+Scroll-to-top: - Show after the same approximate scroll threshold
+(300px). - Scroll smoothly to the top. - Use a semantic button and
+accessible label.
+
+Contact form: - Inspect the original form markup and current JS
+behavior. - The current main.js only simulates submission with a timeout
+and success message; it does NOT send email or save enquiries. - Do not
+claim that a message is actually delivered. - Preserve the current
+frontend interaction if there is no backend: validate required fields,
+show a clearly worded demo/simulation confirmation, disable the submit
+button while processing, reset only when appropriate, and make the
+status accessible with aria-live. - Keep the form implementation ready
+to connect to a real API later, but do not fabricate an API endpoint.
+
+WhatsApp: - Preserve the existing WhatsApp destination and message. -
+Keep external links safe with target=“_blank” and rel=“noopener
+noreferrer” where used.
+
+ROBOTICS VIDEO The source HTML references: video/aura-robot-demo.mp4 and
+uses img/flagship.jpeg as the poster. The supplied archive does not
+appear to include a video directory or MP4 file. - Build a reusable
+responsive RoboticsVideo component. - Use the supplied video only if it
+is actually present in the project. - If it is missing, show a polished,
+honest “Robotics demonstration video coming soon” placeholder using the
+supplied poster image. Do not show a broken video player or use an
+unauthorized video. - Make the video source easy to replace later with
+an approved local MP4, YouTube, or Vimeo URL. - Keep the section title
+and supporting copy from the source.
+
+CLIENT CORRECTIONS — MUST IMPLEMENT Read html/corrections.md fully and
+implement every applicable request. At minimum, verify these points:
+
+1.  Expos & Trade Fairs: Replace any server rack, data-center,
+    cable-management, or unrelated IT image with an appropriate
+    high-quality exhibition/trade fair/robotics expo visual. A humanoid
+    robot at a modern exhibition is ideal. Do not use server-room
+    imagery.
+
+2.  VIP Weddings & Private Events: Use a premium, elegant visual that
+    combines a luxury wedding/private event with a clearly relevant
+    humanoid robotics element (for example, a robot greeting guests or
+    carrying a ring tray). Do not use an ordinary balloon-release
+    wedding image without a robotics connection.
+
+3.  STEM & Education: Ensure the complete “STEM & Education” heading is
+    clearly associated with its own image and content. The image should
+    show students/educators interacting with robotics or educational
+    technology. Correct any cropping, overlap, or ordering issue.
+
+4.  Robotics showroom / technology visual: Replace any unrelated
+    smartwatch/tablet-focused visual with a humanoid robot as the clear
+    primary subject in a robotics showroom, demonstration, or technology
+    environment.
+
+5.  Why AURA HUMANOID TECH: Present the reasons as a balanced, visually
+    engaging card/grid layout with modern restrained icons, title, and
+    short description. Preserve the brand’s dark/cyan/blue visual system
+    and existing approved content. Do not leave this as a long plain
+    text block.
+
+6.  Footer company details: Clearly show AURA HUMANOID TECH
+    (003884766-K), Kota Kemuning, Shah Alam, Selangor, and the official
+    email and phone details exactly as supplied. Do not invent details.
+
+7.  Footer navigation: Make Home, About, Robotics, Applications, Why Us
+    (if present), and Contact links scroll to the correct section with a
+    proper fixed-header offset. Keep the navigation usable on mobile.
+
+8.  Robotics video: Include one responsive robotics video section after
+    the Robotics introduction and before Applications, as requested in
+    corrections.md and the source HTML. Prefer a real approved robot
+    dance or controlled human-interaction/boxing demonstration only when
+    an approved video asset is provided. Otherwise use the coming-soon
+    placeholder described above.
+
+9.  Overall visual quality: Keep the site premium, futuristic, minimal,
+    professional, clean, and robotics-focused. Avoid cartoon robots,
+    generic stock technology images, excessive colors, random imagery,
+    and overloaded layouts.
+
+10. Responsive quality: Test desktop, laptop, tablet, and mobile. Check
+    navigation, hero columns, grids, cards, section spacing, typography,
+    image crops, video ratio, footer, and floating buttons. There must
+    be no horizontal scrolling, clipping, overlapping content, broken
+    images, or inaccessible controls.
+
+IMPORTANT ASSET RULES - Inspect the actual images in public/images
+before assigning them to sections; do not assume an image’s content from
+its filename alone. - Reuse the supplied correct images. - If a required
+replacement image is not available, do not pretend it exists. Leave a
+clearly documented placeholder or request an approved image. - Keep
+image aspect ratios intentional and use object-position where needed. -
+Optimize oversized assets, especially the favicon if it is unusually
+large, without degrading quality. - Do not create or reference a video
+file that is not present.
+
+NEXT.JS QUALITY RULES - Use Server Components by default. Add “use
+client” only to components that need state, effects, browser APIs, or
+event handlers. - Do not access window, document, or localStorage during
+server rendering. - Use useEffect/useRef/useState for browser
+interactions and clean up every event listener/observer. - Avoid
+hydration errors and invalid nested elements. - Avoid unnecessary
+dependencies and do not add jQuery. - Keep CSS class names consistent
+and avoid broad selectors that unintentionally style unrelated
+components. - Use semantic landmarks, correct heading hierarchy,
+keyboard focus states, visible focus indicators, accessible labels, and
+sufficient contrast. - Respect prefers-reduced-motion. - Avoid layout
+shift by providing image dimensions/aspect ratios and stable component
+structure. - Use lazy loading for below-the-fold media; prioritize the
+hero image appropriately. - Do not use dangerouslySetInnerHTML for
+ordinary content. - Do not leave console errors, warnings, unused
+imports, dead code, or broken links.
+
+IMPLEMENTATION WORKFLOW Follow this order: PHASE 1 — AUDIT - Inspect all
+supplied files and the existing Next.js project (if one exists). -
+Summarize the current page sections, assets, existing interactions,
+responsive breakpoints, and client corrections. - Identify missing
+assets, especially the referenced video file. - Do not start coding
+until the audit is complete.
+
+PHASE 2 — PROJECT SETUP - If no Next.js project exists, provide/run the
+appropriate create-next-app setup using App Router. - If a project
+exists, preserve its configuration and integrate into it. - Confirm the
+package manager based on the lockfile; do not mix npm, pnpm, yarn, and
+bun.
+
+PHASE 3 — CONVERSION - Build the page and reusable components. - Move
+assets and styles. - Implement all interactive behaviors with React. -
+Apply all client corrections without removing unrelated approved
+content.
+
+PHASE 4 — TESTING - Run the project’s lint/type-check/build commands
+where available. - Start the development server and inspect the page. -
+Test all navigation links, mobile menu, smooth scrolling, scroll reveal,
+scroll-to-top, form validation/demo state, WhatsApp links, and
+responsive breakpoints. - Check for missing assets, console errors,
+hydration errors, and horizontal overflow. - Fix issues found before
+reporting completion.
+
+PHASE 5 — HANDOVER Provide: 1. Final folder/file structure. 2. List of
+components created. 3. List of images reused/replaced and their section
+assignments. 4. Video status (real approved video or placeholder;
+clearly state if the MP4 is still required). 5. Interactions implemented
+and any backend limitations. 6. Commands to install dependencies and run
+locally. 7. Build/test results. 8. Any client-supplied assets or
+information still required.
+
+LOCAL DEVELOPMENT COMMANDS If creating a new project, use the
+appropriate command for the selected package manager, for example: npx
+create-next-app@latest aura-humanoid-next Then: cd aura-humanoid-next
+npm run dev
+
+Do not blindly execute these commands if a project already exists.
+Inspect first.
+
+FINAL EXECUTION INSTRUCTION Do not respond with only an explanation or a
+code sample. Actually perform the conversion in the provided working
+project when file-editing tools are available. If you are operating in a
+chat-only environment without project write access, explain that
+limitation and provide complete, copy-ready files or a step-by-step
+implementation plan.
+
+Start by auditing the supplied archive and the current project. Work in
+small, verifiable phases. Preserve the original site and content while
+making the conversion robust, accessible, responsive, and maintainable.

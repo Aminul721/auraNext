@@ -1,0 +1,404 @@
+AURA HUMANOID TECH — BACKEND DEVELOPMENT PROMPT
+
+ROLE Act as a senior backend architect and full-stack TypeScript
+engineer. Extend the existing AURA HUMANOID TECH Next.js frontend with a
+secure, maintainable backend using a SEPARATE Node.js + Express +
+MongoDB application.
+
+You must inspect the supplied frontend project before making changes.
+Build the backend in a /backend folder beside the existing Next.js
+project. Do not replace the frontend with a new application.
+
+EXISTING PROJECT FACTS The supplied ZIP contains this project:
+
+-   Next.js App Router
+-   TypeScript
+-   React 19
+-   Next.js 16
+-   Existing app/page.tsx, app/layout.tsx, app/globals.css
+-   Existing components: Header.tsx, FloatingActions.tsx,
+    RoboticsVideo.tsx, Icons.tsx, Reveal.tsx
+-   Existing images in public/images/
+-   npm package-lock.json is present
+-   Current website is a single-page AURA HUMANOID TECH corporate
+    robotics website
+
+The frontend package.json currently has Next.js/React dependencies and
+scripts for dev, build, start, lint and typecheck. It does not currently
+contain the Express backend or MongoDB application.
+
+The current contact area is informational only. It contains: -
+info@aurahumanoidtech.com - sales@aurahumanoidtech.com -
+admin@aurahumanoidtech.com - Phone: +60 10-209 0179 - WhatsApp number:
++60102090179 - Business: AURA HUMANOID TECH - SSM registration:
+003884766-K - Address: No. 1, Jalan Anggerik Tainia AW 31/AW, Kota
+Kemuning, 40460 Shah Alam, Selangor, Malaysia.
+
+There is currently NO actual contact form in app/page.tsx and NO backend
+API. Add a proper enquiry form to the existing contact section while
+preserving the existing contact information and visual design.
+
+PRIMARY ARCHITECTURE Use this architecture:
+
+Browser | v Next.js frontend (existing project, localhost:3000) | |
+HTTPS/JSON REST API v Express + Node.js + TypeScript backend
+(localhost:5000) | v MongoDB (local MongoDB or MongoDB Atlas)
+
+The backend must be a separate application in /backend. Do not use
+Next.js route handlers as the main backend. Do not connect MongoDB
+directly from browser/client components. Do not expose MongoDB
+credentials or JWT secrets to the frontend.
+
+PROJECT STRUCTURE Preserve the existing frontend and add:
+
+aura-humanoid-project/ app/ components/ public/ package.json
+package-lock.json … backend/ src/ config/ database.ts env.ts
+controllers/ health.controller.ts enquiry.controller.ts
+auth.controller.ts admin-enquiry.controller.ts middleware/
+error.middleware.ts not-found.middleware.ts auth.middleware.ts
+validate.middleware.ts rate-limit.middleware.ts models/ Enquiry.ts
+Admin.ts routes/ health.routes.ts enquiry.routes.ts auth.routes.ts
+admin-enquiry.routes.ts services/ email.service.ts validators/
+enquiry.validator.ts auth.validator.ts utils/ ApiError.ts
+asyncHandler.ts app.ts server.ts scripts/ create-admin.ts .env.example
+.gitignore package.json tsconfig.json README.md
+
+Adjust this structure if necessary, but keep a clear separation between
+routes, controllers, models, services, validation, middleware, and
+configuration.
+
+TECHNOLOGY Use: - Node.js LTS - Express - TypeScript - MongoDB -
+Mongoose - Zod for request validation - dotenv for environment
+variables - cors with a strict allowlist - helmet for security headers -
+express-rate-limit for rate limiting - bcryptjs or bcrypt for password
+hashing - jsonwebtoken for access-token authentication - cookie-parser
+only if using secure HttpOnly cookies - Nodemailer for optional enquiry
+notification emails - pino or another structured logger if useful, but
+avoid unnecessary dependencies
+
+Use stable compatible package versions. Inspect the existing runtime and
+npm setup. Do not install packages into the frontend package.json unless
+the frontend actually needs them.
+
+IMPORTANT: The project has an npm lockfile. Use npm consistently. Do not
+mix npm, pnpm, yarn, and bun.
+
+PHASE 1 — AUDIT BEFORE CODING 1. Inspect the full frontend source,
+especially app/page.tsx, app/layout.tsx, components, package.json, and
+.gitignore. 2. Confirm the contact section markup and current
+email/phone/WhatsApp information. 3. Confirm there is no contact form
+and no existing API. 4. Identify the exact frontend location where the
+enquiry form should be inserted. 5. Keep the existing design, text,
+navigation, responsive layout, components, images, and interactions. 6.
+Do not delete or rewrite unrelated frontend sections. 7. Report the
+findings briefly, then implement in phases.
+
+PHASE 2 — CREATE THE EXPRESS BACKEND Create the /backend application
+with: - TypeScript configuration - Express application setup - Separate
+server bootstrap - Environment variable validation - MongoDB connection
+using Mongoose - Centralized error handling - 404 handler - Request
+logging - CORS allowlist for the frontend origin - Helmet - JSON body
+parsing with a sensible size limit - Rate limiting - Health-check
+endpoint
+
+Expected local development origins: - Frontend: http://localhost:3000 -
+Backend: http://localhost:5000
+
+Use configurable environment variables rather than hardcoding production
+domains.
+
+Add scripts such as: - npm run dev - npm run build - npm start - npm run
+typecheck - npm run lint (if configured) - npm run create-admin
+
+The backend must start only after environment validation and a
+successful MongoDB connection. Handle graceful shutdown for
+SIGINT/SIGTERM and close the MongoDB connection cleanly.
+
+PHASE 3 — ENVIRONMENT CONFIGURATION Create backend/.env.example with
+documented placeholders, for example:
+
+NODE_ENV=development PORT=5000
+MONGODB_URI=mongodb://127.0.0.1:27017/aura_humanoid_tech
+FRONTEND_URL=http://localhost:3000
+JWT_ACCESS_SECRET=replace_with_a_long_random_secret
+JWT_ACCESS_EXPIRES_IN=15m ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=replace_with_a_strong_password SMTP_HOST= SMTP_PORT=
+SMTP_SECURE= SMTP_USER= SMTP_PASS= MAIL_FROM=
+ENQUIRY_NOTIFICATION_EMAIL=admin@aurahumanoidtech.com
+
+Do not put real credentials in source code. Do not commit .env. Never
+expose secrets through NEXT_PUBLIC_ variables. Validate required
+environment variables at startup and fail with clear, safe messages. Do
+not log secret values.
+
+PHASE 4 — MONGODB DATA MODELS
+
+A. Enquiry model Create a Mongoose Enquiry model with fields: - name:
+required string, trimmed, length-limited - email: required valid email,
+normalized lowercase - phone: optional string, length-limited - company:
+optional string, length-limited - service: optional string or controlled
+enum for the enquiry category - eventDate: optional valid date -
+eventLocation: optional string - message: required string, trimmed,
+length-limited - status: enum: new, contacted, in_progress, completed,
+spam; default new - source: optional string, e.g. website - createdAt
+and updatedAt timestamps
+
+Add indexes for createdAt, status, and email where appropriate. Avoid
+storing unnecessary personal data. Do not store passwords or secrets in
+enquiry documents.
+
+B. Admin model Create an Admin model with: - email: unique, normalized
+lowercase - passwordHash: required; never store a plaintext password -
+role: admin (allow future role expansion only if needed) - isActive:
+boolean default true - lastLoginAt - timestamps
+
+Use a unique index on email.
+
+PHASE 5 — PUBLIC ENQUIRY API Implement:
+
+POST /api/enquiries
+
+This endpoint must: 1. Validate all input with Zod on the server. 2.
+Normalize and sanitize data safely. 3. Reject unknown or malformed
+fields where appropriate. 4. Validate email format. 5. Enforce length
+limits. 6. Apply rate limiting to prevent spam and abuse. 7. Save valid
+enquiries in MongoDB. 8. Return a consistent JSON response. 9. Never
+expose database errors, stack traces, internal paths, or secrets. 10.
+Send an optional notification email after successful persistence, if
+SMTP is configured. 11. If email sending fails, retain the saved enquiry
+and log the mail failure safely; do not lose the enquiry. 12. Do not
+claim an email has been delivered unless the mail provider confirms
+acceptance. The frontend success message should mean the enquiry was
+received by the application/database.
+
+Example success response: { “success”: true, “message”: “Your enquiry
+has been received. Our team will contact you soon.”, “data”: { “id”: “…”
+} }
+
+Use suitable HTTP status codes: - 201 created - 400 validation error -
+429 rate limit - 500 generic server error
+
+Do not return private fields or full Mongoose documents.
+
+Add a GET /api/health endpoint that reports application status and
+database connectivity without disclosing credentials or internal
+configuration.
+
+PHASE 6 — CONNECT THE EXISTING NEXT.JS CONTACT SECTION The current
+app/page.tsx has a contact section with contact information cards but no
+enquiry form.
+
+Add a polished, accessible enquiry form to that section. Preserve the
+current premium dark, navy, cyan and electric-blue design. Reuse
+existing CSS conventions and add only scoped styles to app/globals.css.
+
+Suggested fields: - Full name (required) - Email address (required) -
+Phone / WhatsApp (optional) - Company / organization (optional) -
+Service interested in (optional select: Corporate Events, Product
+Launches, Expos & Trade Fairs, VIP Weddings & Private Events, STEM &
+Education, Other) - Event date (optional) - Event location (optional) -
+Message / requirements (required)
+
+Frontend requirements: 1. Use a dedicated client component such as
+components/EnquiryForm.tsx. 2. Keep the rest of the homepage as Server
+Components wherever possible. 3. Add “use client” only to the form
+component if needed. 4. Submit to the Express API using a configurable
+NEXT_PUBLIC_API_BASE_URL. 5. For local development, use
+http://localhost:5000/api. 6. Do not hardcode production API URLs in
+components. 7. Validate required fields on the frontend for user
+experience, but always validate again on the backend. 8. Show loading
+state and disable the submit button while submitting. 9. Show accessible
+success and error messages using aria-live. 10. Prevent duplicate
+submissions. 11. Preserve entered data after a failed request. 12. Clear
+the form only after a confirmed successful API response. 13. Handle
+network errors and server validation errors gracefully. 14. Never show a
+false success state if the API request fails. 15. Do not send email
+directly from the browser. 16. Do not expose SMTP credentials or JWT
+secrets to the frontend. 17. Ensure keyboard navigation, labels, focus
+states, and mobile usability. 18. Do not remove or change existing
+contact email, phone, address, or WhatsApp links.
+
+Add a frontend .env.local.example or document this variable:
+
+NEXT_PUBLIC_API_BASE_URL=http://localhost:5000/api
+
+Explain that NEXT_PUBLIC_API_BASE_URL is public and must contain no
+secret.
+
+PHASE 7 — ADMIN AUTHENTICATION Create secure admin authentication for
+the management API.
+
+Requirements: - Admin account creation must use a protected local setup
+script, not a public registration endpoint. - Read initial admin
+email/password from backend environment variables or secure interactive
+input. - Hash passwords with bcrypt. - Never return passwordHash. -
+Login endpoint validates credentials and active status. - Use
+short-lived JWT access tokens. - Prefer HttpOnly, Secure (in
+production), SameSite cookies for browser-based admin authentication. If
+cookies are used, implement appropriate CSRF protections for
+state-changing requests. - If Bearer tokens are used instead, store them
+safely and document the trade-offs; do not store long-lived tokens in
+localStorage. - Verify JWT signature, expiry, and role on protected
+routes. - Add login rate limiting. - Return generic invalid-credentials
+messages. - Do not provide public admin registration. - Do not hardcode
+default passwords. - Document how to create the first admin safely.
+
+Endpoints: POST /api/auth/login POST /api/auth/logout GET /api/auth/me
+
+PHASE 8 — ADMIN ENQUIRY MANAGEMENT API All routes below must require
+admin authentication:
+
+GET /api/admin/enquiries - Pagination using page and limit - Sort newest
+first by default - Optional search by name/email/company - Optional
+status filter - Validate query parameters - Return total count, current
+page, total pages, and safe enquiry fields
+
+GET /api/admin/enquiries/:id - Return one enquiry - Validate MongoDB
+ObjectId
+
+PATCH /api/admin/enquiries/:id - Allow status updates and only
+explicitly approved editable fields - Validate input - Do not allow
+arbitrary MongoDB operators or mass assignment
+
+DELETE /api/admin/enquiries/:id - Protected delete - Consider soft
+delete if appropriate; document the chosen behavior
+
+GET /api/admin/dashboard - Return useful counts: total enquiries, new,
+contacted, in progress, completed - Return recent enquiries - Use
+efficient MongoDB queries
+
+Never expose admin password hashes, JWTs, internal database fields, or
+stack traces.
+
+PHASE 9 — ADMIN DASHBOARD FRONTEND Build a simple protected admin area
+in the existing Next.js frontend only after the backend authentication
+and API are working.
+
+Suggested routes: - /admin/login - /admin/dashboard - /admin/enquiries -
+/admin/enquiries/[id]
+
+Requirements: - Match the AURA brand, but prioritize readability and
+usability. - Protect admin pages and API calls. - Handle expired
+sessions. - Provide logout. - Dashboard summary cards. - Enquiry list
+with pagination, search, and status filter. - Enquiry detail view. -
+Update enquiry status. - Confirm before deleting. - Loading, empty,
+error, and success states. - Responsive desktop/tablet/mobile layout. -
+Do not expose admin-only data to public pages. - Do not rely only on
+client-side route hiding for security; every admin API endpoint must
+enforce authorization on the server.
+
+PHASE 10 — EMAIL NOTIFICATIONS Implement an optional backend email
+service using Nodemailer.
+
+When SMTP variables are configured: - Send an enquiry notification to
+ENQUIRY_NOTIFICATION_EMAIL. - Include sender name, email, phone,
+company, service, event date/location, and message. - Escape or safely
+render user-provided content. - Set a useful subject. - Do not expose
+SMTP settings. - Do not block enquiry persistence if notification email
+fails. - Log errors without logging credentials or full sensitive
+enquiry content.
+
+Do not send automatic marketing emails. Do not implement newsletter
+subscriptions unless explicitly requested.
+
+PHASE 11 — SECURITY AND QUALITY Implement: - Strict CORS allowlist -
+Helmet security headers - Request body size limits - Zod validation -
+Rate limiting on public enquiry and login routes - Secure password
+hashing - JWT expiry and verification - Safe error responses - ObjectId
+validation - No mass assignment - No secrets in Git - No secrets in
+browser bundles - No public admin registration - No MongoDB access from
+the frontend - No unsafe HTML rendering - Sensible logging - Graceful
+shutdown
+
+Add .gitignore entries for: .env .env.* !.env.example node_modules/
+dist/ coverage/ logs/
+
+If cookies are used, configure credentials and CORS correctly and
+document local and production cookie behavior.
+
+PHASE 12 — TESTING Add automated tests for important behavior. Use a
+suitable test stack such as Vitest or Jest and Supertest. Use a separate
+test database or mocked database; never run destructive tests against
+production data.
+
+At minimum test: - Health endpoint - Valid enquiry submission - Invalid
+email - Missing required fields - Oversized message - Rate limiting
+behavior - Admin login success/failure - Unauthorized admin access -
+Enquiry list pagination - Invalid enquiry ID - Status update validation
+
+Run: - Backend typecheck - Backend lint (if configured) - Backend
+tests - Backend production build - Frontend typecheck - Frontend lint -
+Frontend production build
+
+Fix all errors introduced by the work. Do not claim a test passed unless
+it was actually run.
+
+PHASE 13 — LOCAL DEVELOPMENT GUIDE Document exact commands and terminal
+locations.
+
+Expected local development: Terminal 1: cd backend npm install cp
+.env.example .env # Add a valid MongoDB connection string and strong
+secrets npm run dev
+
+Terminal 2, from project root: npm install # Configure frontend
+.env.local npm run dev
+
+Frontend: http://localhost:3000
+
+Backend: http://localhost:5000
+
+Health: http://localhost:5000/api/health
+
+Explain how to: - Install/start local MongoDB OR create a MongoDB Atlas
+database. - Set MONGODB_URI. - Generate a secure JWT secret. - Create
+the initial admin account. - Configure optional SMTP. - Test an
+enquiry. - Access the admin dashboard.
+
+Do not assume MongoDB is already installed. Give both local MongoDB and
+Atlas setup paths, and clearly explain which one is being used.
+
+PHASE 14 — PRODUCTION READINESS Provide deployment guidance for: -
+Next.js frontend hosting - Express backend hosting - MongoDB Atlas -
+Environment variables - HTTPS - CORS production origin - Secure cookies
+/ CSRF if applicable - API URL configuration - Database backups - Logs
+and monitoring
+
+Do not deploy, create paid resources, or change DNS without explicit
+approval. Do not place secrets in source control. Explain that
+production frontend and backend URLs must be configured separately.
+
+IMPLEMENTATION RULES 1. Actually implement the backend and frontend
+integration in the supplied project when file editing is available. Do
+not merely return sample snippets. 2. Work in small phases and verify
+each phase. 3. Preserve the existing Next.js frontend and design. Do not
+rebuild the website. 4. Do not create a second Next.js app. 5. Do not
+place Express code inside the frontend app directory. 6. Do not use
+Next.js API routes as a replacement for the requested separate Express
+backend. 7. Do not add unnecessary modules such as products, payments,
+inventory, booking, CRM, or newsletter unless asked. 8. Do not invent
+company information, email addresses, contact numbers, or services. 9.
+Keep API response shapes consistent. 10. Keep TypeScript types shared or
+mirrored safely; do not import backend runtime modules into the
+frontend. 11. Never commit .env or real secrets. 12. Never claim an
+email was sent merely because the enquiry was saved. 13. Do not silently
+swallow errors. 14. If a requirement is ambiguous, choose a secure
+minimal implementation and document the assumption. 15. If an external
+service is unavailable, build a clear optional integration and document
+the setup required.
+
+FINAL HANDOVER At completion, provide: 1. Final project folder
+structure. 2. Backend dependencies and versions. 3. MongoDB connection
+configuration. 4. All API endpoints with methods and authentication
+requirements. 5. Enquiry schema and admin schema. 6. Contact form
+integration details. 7. Admin dashboard routes and capabilities. 8.
+Environment variables required, with no secret values displayed. 9.
+Exact commands to run frontend and backend in separate terminals. 10.
+Test, lint, typecheck, and build results. 11. Any unfinished tasks or
+external credentials/assets still needed. 12. A short API usage example
+for submitting an enquiry.
+
+START NOW First audit the supplied Next.js frontend project and confirm
+its existing structure and contact section. Then implement the separate
+Express + MongoDB backend and connect the new enquiry form. Work phase
+by phase, run the available checks, and preserve the existing AURA
+HUMANOID TECH frontend.

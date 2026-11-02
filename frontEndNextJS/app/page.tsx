@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { FloatingActions } from "@/components/FloatingActions";
+import { EnquiryForm } from "@/components/EnquiryForm";
 import { Header } from "@/components/Header";
 import { Icon } from "@/components/Icons";
 import { RoboticsVideo } from "@/components/RoboticsVideo";
@@ -572,6 +573,9 @@ export default function Home() {
                 </a>
               </Reveal>
             </div>
+            <Reveal className="contact-enquiry">
+              <EnquiryForm />
+            </Reveal>
           </div>
         </section>
       </main>

@@ -1814,3 +1814,397 @@ button:focus-visible {
     opacity: 1;
     transform: translateY(0);
 }
+
+/* --- Enquiry form --- */
+.contact-enquiry {
+    max-width: 860px;
+    margin: 3rem auto 0;
+}
+
+.enquiry-form-panel {
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.enquiry-form-heading {
+    margin-bottom: 1.5rem;
+}
+
+.enquiry-form-heading .badge {
+    margin-bottom: 0.75rem;
+}
+
+.enquiry-form-heading h3 {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+}
+
+.enquiry-form .form-group {
+    min-width: 0;
+}
+
+.enquiry-form textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+.enquiry-submit:disabled,
+.admin-shell button:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+    transform: none;
+}
+
+.enquiry-form-status {
+    min-height: 1.5rem;
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.enquiry-form-status.success,
+.admin-success {
+    color: var(--cyan-neon);
+}
+
+.enquiry-form-status.error,
+.admin-error {
+    color: #ff9a9a;
+}
+
+/* --- Admin interface --- */
+.admin-shell {
+    min-height: 100vh;
+    background:
+        radial-gradient(ellipse at 10% 0%, rgba(37, 99, 235, 0.12), transparent 35%),
+        var(--matte-black);
+}
+
+.admin-auth-wrap {
+    display: grid;
+    min-height: 100vh;
+    align-content: center;
+    justify-items: center;
+    gap: 1.5rem;
+    padding: 2rem 1rem;
+}
+
+.admin-brand {
+    font-family: var(--font-heading);
+    font-size: 1.35rem;
+    font-weight: 800;
+}
+
+.admin-brand span {
+    color: var(--cyan-neon);
+    font-weight: 500;
+}
+
+.admin-panel {
+    width: min(100%, 460px);
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.admin-panel h1,
+.admin-page h1 {
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+}
+
+.admin-form {
+    margin-top: 1.5rem;
+}
+
+.admin-form .btn {
+    width: 100%;
+}
+
+.admin-page {
+    min-height: 100vh;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem max(3vw, 1rem);
+    border-bottom: 1px solid var(--glass-border);
+    background: rgba(8, 10, 15, 0.84);
+}
+
+.admin-user {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.admin-user .btn {
+    padding: 0.55rem 0.85rem;
+}
+
+.admin-content {
+    width: min(1200px, 94%);
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 4rem) 0;
+}
+
+.admin-page-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.admin-page-heading h1 {
+    margin-bottom: 0;
+}
+
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.admin-stat {
+    padding: 1.5rem;
+}
+
+.admin-stat h2 {
+    margin-bottom: 0.25rem;
+    color: var(--cyan-neon);
+    font-size: 2rem;
+}
+
+.admin-stat p {
+    color: var(--text-muted);
+}
+
+.admin-recent,
+.admin-table-wrap,
+.enquiry-detail {
+    margin-top: 1.5rem;
+    padding: clamp(1rem, 3vw, 1.75rem);
+}
+
+.admin-recent h2 {
+    margin-bottom: 1rem;
+}
+
+.admin-recent ul {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.admin-recent li a {
+    display: grid;
+    grid-template-columns: 1.1fr 1.4fr 1.3fr auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.9rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 6px;
+}
+
+.admin-recent li a:hover,
+.admin-table a:hover {
+    color: var(--cyan-neon);
+}
+
+.status-pill {
+    display: inline-flex;
+    padding: 0.25rem 0.55rem;
+    border: 1px solid rgba(0, 240, 255, 0.25);
+    border-radius: 999px;
+    color: var(--cyan-neon);
+    font-size: 0.78rem;
+    white-space: nowrap;
+}
+
+.admin-filters {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) minmax(150px, 220px) auto;
+    gap: 1rem;
+    align-items: end;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.admin-filters .form-group {
+    margin-bottom: 0;
+}
+
+.admin-table-wrap {
+    overflow-x: auto;
+}
+
+.admin-table {
+    width: 100%;
+    min-width: 660px;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 0.9rem 0.75rem;
+    border-bottom: 1px solid var(--glass-border);
+    vertical-align: top;
+}
+
+.admin-table th {
+    color: var(--cyber-silver);
+    font-size: 0.85rem;
+}
+
+.admin-table td {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.admin-table td:first-child {
+    color: var(--text-light);
+}
+
+.admin-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    color: var(--text-muted);
+}
+
+.admin-pagination > div {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.admin-pagination .btn,
+.admin-detail-actions .btn {
+    padding: 0.65rem 0.9rem;
+}
+
+.admin-empty {
+    padding: 1.5rem;
+}
+
+.enquiry-detail dl {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+}
+
+.enquiry-detail dl > div {
+    min-width: 0;
+}
+
+.enquiry-detail dt {
+    margin-bottom: 0.3rem;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+}
+
+.enquiry-detail dd {
+    overflow-wrap: anywhere;
+}
+
+.enquiry-detail dd a {
+    color: var(--cyan-neon);
+}
+
+.enquiry-detail .detail-message {
+    grid-column: 1 / -1;
+    white-space: pre-wrap;
+}
+
+.admin-detail-actions {
+    display: flex;
+    align-items: end;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--glass-border);
+}
+
+.admin-detail-actions .form-group {
+    min-width: 200px;
+    margin: 0;
+}
+
+.btn-danger {
+    background: #7f1d1d;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #991b1b;
+}
+
+@media (max-width: 900px) {
+    .admin-stats {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .admin-recent li a {
+        grid-template-columns: 1fr 1.4fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .admin-header,
+    .admin-page-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .admin-user {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .admin-page-heading .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .admin-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .admin-filters {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-filters > .btn {
+        width: 100%;
+    }
+
+    .admin-recent li a {
+        grid-template-columns: 1fr;
+        gap: 0.25rem;
+    }
+
+    .admin-pagination {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .enquiry-detail dl {
+        grid-template-columns: 1fr;
+    }
+
+    .enquiry-detail .detail-message {
+        grid-column: auto;
+    }
+
+    .admin-detail-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .admin-detail-actions .form-group {
+        width: 100%;
+    }
+}
